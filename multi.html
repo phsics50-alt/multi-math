@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>포근포근 세로셈 곱셈 연습장 (두 자릿수 × 한 자릿수)</title>
+  <!-- 귀여운 둥근 한글 폰트: Gaegu & Gowun Dodum -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #FFF5F5;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --text-color: #7B6B8D;
+      --pink-accent: #FFB5C2;
+      --pink-soft: #FFE4E8;
+      --blue-accent: #B5D8F7;
+      --blue-soft: #E1F0FD;
+      --purple-accent: #C7B8EA;
+      --yellow-accent: #FDF1B8;
+      --line-color: #7B6B8D;
+      --shadow-soft: 0 10px 25px rgba(255, 181, 194, 0.22);
+      --border-radius-card: 26px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Gowun Dodum', 'Gaegu', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+      padding: 24px 16px 80px 16px;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 181, 194, 0.28) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(181, 216, 247, 0.32) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(253, 241, 184, 0.22) 0%, transparent 50%);
+    }
+
+    /* 포근한 배경 장식 요소들 (SVG 구름, 달, 별, 토끼 등) */
+    .bg-deco {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+      animation: floatSlow 8s ease-in-out infinite alternate;
+    }
+    @keyframes floatSlow {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-14px) rotate(3deg); }
+    }
+    .deco-cloud1 { top: 40px; left: -20px; width: 140px; animation-duration: 9s; }
+    .deco-cloud2 { top: 180px; right: 10px; width: 160px; animation-duration: 11s; }
+    .deco-bunny { bottom: 30px; left: 20px; width: 110px; animation-duration: 7s; }
+    .deco-bear { bottom: 40px; right: 20px; width: 110px; animation-duration: 8s; }
+    .deco-stars { top: 90px; right: 120px; width: 50px; animation-duration: 6s; }
+
+    /* 네비게이션 & 헤더 컨트롤 바 */
+    header {
+      z-index: 10;
+      width: 100%;
+      max-width: 960px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .title-banner {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,245,245,0.9));
+      padding: 18px 40px;
+      border-radius: 40px;
+      box-shadow: var(--shadow-soft);
+      border: 3px solid #FFF;
+      position: relative;
+    }
+
+    .title-banner h1 {
+      font-family: 'Jua', 'Gowun Dodum', sans-serif;
+      font-size: 2.1rem;
+      color: #6C5B7B;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .title-banner p {
+      margin-top: 6px;
+      font-size: 1.05rem;
+      color: #907F9E;
+      font-weight: 500;
+    }
+
+    /* 상단 컨트롤 영역 */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 6px;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(255, 181, 194, 0.2);
+      gap: 6px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 9px 18px;
+      font-size: 1rem;
+      font-family: 'Jua', sans-serif;
+      color: #8C7B9E;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 181, 194, 0.25);
+      color: #614D73;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--pink-accent), #FFA4B4);
+      color: white;
+      box-shadow: 0 4px 12px rgba(255, 160, 180, 0.4);
+    }
+
+    .tab-btn.ans-tab.active {
+      background: linear-gradient(135deg, #8EC5FC, #B5D8F7);
+      box-shadow: 0 4px 12px rgba(142, 197, 252, 0.45);
+      color: #2F4858;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-btn {
+      border: none;
+      background: white;
+      color: #6C5B7B;
+      font-family: 'Jua', sans-serif;
+      font-size: 0.95rem;
+      padding: 9px 20px;
+      border-radius: 30px;
+      box-shadow: 0 4px 14px rgba(123, 107, 141, 0.12);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(123, 107, 141, 0.18);
+      background: #FFF9FA;
+    }
+
+    .btn-print {
+      background: linear-gradient(135deg, #B5D8F7, #D0E7FF);
+      color: #385575;
+    }
+
+    .btn-reset {
+      background: linear-gradient(135deg, #FFE4E8, #FFD0D8);
+      color: #7D4653;
+    }
+
+    /* 학습지 종이 시트 본체 (A4 비례 & 인쇄 최적화) */
+    .worksheet-container {
+      width: 100%;
+      max-width: 860px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-sheet {
+      background: #FFFFFF;
+      border-radius: var(--border-radius-card);
+      padding: 38px 46px;
+      box-shadow: var(--shadow-soft), 0 0 0 5px #FFF9F9;
+      border: 3px dashed rgba(255, 181, 194, 0.6);
+      margin-bottom: 30px;
+      position: relative;
+      display: none; /* 탭 전환용 */
+    }
+
+    .page-sheet.active {
+      display: block;
+      animation: fadeIn 0.35s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 워크시트 상단 메타 (이름, 날짜, 목표) */
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 2px solid #F6E7EB;
+      padding-bottom: 18px;
+      margin-bottom: 30px;
+    }
+
+    .sheet-header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .badge-page {
+      background: linear-gradient(135deg, var(--pink-soft), var(--pink-accent));
+      color: #6C3F4B;
+      font-family: 'Jua', sans-serif;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 1.15rem;
+      box-shadow: 0 3px 8px rgba(255, 181, 194, 0.35);
+    }
+
+    .sheet-title-info h2 {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.65rem;
+      color: #6C5B7B;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sheet-title-info p {
+      font-size: 0.92rem;
+      color: #A393B0;
+      margin-top: 4px;
+    }
+
+    .sheet-header-right {
+      display: flex;
+      gap: 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .input-pill {
+      background: #FDF7F8;
+      border: 1.5px solid #F1D4DB;
+      border-radius: 16px;
+      padding: 5px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #7B6B8D;
+    }
+
+    .input-pill input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: 'Gowun Dodum', sans-serif;
+      font-size: 0.95rem;
+      color: #554466;
+      width: 75px;
+    }
+
+    /* 세로 셈 문제 3x3 그리드 (총 9문제) */
+    .problems-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px 22px;
+    }
+
+    .problem-card {
+      background: #FCF9FA;
+      border-radius: 20px;
+      border: 2px solid #F8E3E8;
+      padding: 16px 14px 18px 14px;
+      position: relative;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .problem-card:hover {
+      background: #FFFFFF;
+      border-color: var(--pink-accent);
+      box-shadow: 0 6px 16px rgba(255, 181, 194, 0.25);
+    }
+
+    .problem-num {
+      position: absolute;
+      top: 10px;
+      left: 14px;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.05rem;
+      color: #9F8EA8;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .problem-icon-tag {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-size: 1.2rem;
+      opacity: 0.85;
+    }
+
+    /* 세로셈 틀 (Vertical Multiplication Structure) */
+    .vertical-math {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      width: 170px;
+      font-family: 'Gaegu', 'Gowun Dodum', monospace;
+      font-size: 1.95rem;
+      font-weight: 700;
+      color: #5D4A6E;
+      user-select: none;
+    }
+
+    .num-row {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      letter-spacing: 12px;
+      padding-right: 4px;
+      line-height: 1.25;
+    }
+
+    .num-row.multiplicand {
+      margin-bottom: 2px;
+    }
+
+    .num-row.multiplier-row {
+      position: relative;
+      margin-bottom: 5px;
+    }
+
+    .operator-symbol {
+      position: absolute;
+      left: 6px;
+      top: 0;
+      color: #E27992;
+      font-size: 1.6rem;
+    }
+
+    /* 첫 번째 가로선 */
+    .divider-line {
+      width: 100%;
+      height: 3px;
+      background-color: #8C7B9E;
+      border-radius: 2px;
+      margin: 4px 0 8px 0;
+    }
+
+    /* 부분 곱 (Partial products) 입력 영역 */
+    .partial-step {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .step-label {
+      position: absolute;
+      left: 0;
+      font-size: 0.72rem;
+      font-family: 'Gowun Dodum', sans-serif;
+      color: #B2A2BF;
+      letter-spacing: 0;
+    }
+
+    .box-input {
+      width: 32px;
+      height: 35px;
+      border: 2px dashed #D4BFD9;
+      background: #FFFFFF;
+      border-radius: 8px;
+      text-align: center;
+      font-family: 'Gaegu', 'Jua', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #4C375D;
+      outline: none;
+      transition: all 0.2s ease;
+      caret-color: #E27992;
+    }
+
+    .box-input:focus {
+      border-color: #FF8BA0;
+      background: #FFF8FA;
+      box-shadow: 0 0 0 3px rgba(255, 181, 194, 0.4);
+      border-style: solid;
+    }
+
+    .box-input.correct {
+      border-color: #6FCF97 !important;
+      background-color: #F0FAF4 !important;
+      color: #27AE60 !important;
+      border-style: solid;
+    }
+
+    .box-input.wrong {
+      border-color: #EB5757 !important;
+      background-color: #FDF2F2 !important;
+      color: #EB5757 !important;
+      border-style: solid;
+    }
+
+    .box-placeholder-empty {
+      width: 32px;
+      height: 35px;
+      visibility: hidden;
+    }
+
+    /* 최종 합계 구분선 및 최종 답 영역 */
+    .final-line {
+      width: 100%;
+      height: 2.5px;
+      background-color: #8C7B9E;
+      border-radius: 2px;
+      margin: 4px 0 8px 0;
+    }
+
+    .final-sum-row {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .box-final {
+      width: 34px;
+      height: 38px;
+      border: 2.5px solid #FFB5C2;
+      background: #FFFDFE;
+      border-radius: 9px;
+      text-align: center;
+      font-family: 'Gaegu', 'Jua', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #382747;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .box-final:focus {
+      border-color: #FF6B8B;
+      background: #FFF0F4;
+      box-shadow: 0 0 0 4px rgba(255, 181, 194, 0.45);
+    }
+
+    .box-final.correct {
+      border-color: #27AE60 !important;
+      background-color: #E8F8EE !important;
+      color: #219653 !important;
+    }
+
+    .box-final.wrong {
+      border-color: #EB5757 !important;
+      background-color: #FDF2F2 !important;
+      color: #EB5757 !important;
+    }
+
+    /* 워크시트 하단 귀여운 피드백 & 칭찬 스티커 */
+    .sheet-footer {
+      margin-top: 32px;
+      padding-top: 18px;
+      border-top: 2px solid #F6E7EB;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .score-sticker-zone {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .sticker-circle {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFE8EC, #FFD6DE);
+      border: 2.5px dashed #FF9FB1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: #8C4D5C;
+      font-weight: 700;
+    }
+
+    .sticker-circle span {
+      font-size: 1.2rem;
+    }
+
+    .encouragement-msg {
+      font-family: 'Gaegu', sans-serif;
+      font-size: 1.3rem;
+      color: #88749B;
+    }
+
+    .page-indicator-bottom {
+      font-family: 'Jua', sans-serif;
+      color: #B5A6C0;
+      font-size: 1.05rem;
+    }
+
+    /* 답지 뷰 스타일 (Answer Sheet Tab) */
+    .answer-key-section {
+      background: #FDFBFF;
+      border: 3px solid #D5E6F7;
+      border-radius: var(--border-radius-card);
+      padding: 34px 42px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .ans-page-block {
+      background: #FFFFFF;
+      border-radius: 18px;
+      border: 2px solid #E3EFFB;
+      padding: 22px 26px;
+      margin-bottom: 26px;
+    }
+
+    .ans-page-title {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.35rem;
+      color: #3B6B9B;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #EEF5FC;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    .ans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .ans-item {
+      background: #F8FBFE;
+      border-radius: 14px;
+      padding: 12px 14px;
+      border: 1px solid #D8EAF9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Gowun Dodum', sans-serif;
+    }
+
+    .ans-item-q {
+      font-size: 1rem;
+      color: #55779B;
+      font-weight: bold;
+    }
+
+    .ans-item-steps {
+      text-align: right;
+      font-size: 0.95rem;
+      line-height: 1.35;
+      color: #4A5D70;
+    }
+
+    .ans-item-final {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.25rem;
+      color: #D34568;
+    }
+
+    /* 도우미 모달 & 팁 */
+    .guide-box {
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 246, 248, 0.95));
+      border: 2px solid #FFD8E0;
+      border-radius: 20px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 14px rgba(255, 181, 194, 0.15);
+    }
+
+    .guide-text {
+      font-size: 0.98rem;
+      color: #7B6B8D;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .guide-tag {
+      background: #FFB5C2;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-family: 'Jua', sans-serif;
+      font-size: 0.85rem;
+    }
+
+    /* 토스트 알림 메시지 */
+    .toast-msg {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(92, 74, 107, 0.93);
+      color: #FFFFFF;
+      font-family: 'Jua', sans-serif;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 1.05rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast-msg.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* 프린트 / PDF 출력 시의 스타일 */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .bg-deco,
+      header,
+      .controls,
+      .guide-box,
+      .toast-msg {
+        display: none !important;
+      }
+
+      .worksheet-container {
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+
+      .page-sheet {
+        display: block !important;
+        box-shadow: none !important;
+        border: 2px dashed #E2B2BE !important;
+        margin: 0 !important;
+        padding: 28px 32px !important;
+        page-break-after: always;
+        break-after: page;
+        min-height: 98vh;
+      }
+
+      .answer-key-section {
+        display: block !important;
+        box-shadow: none !important;
+        border: 2px solid #B5D8F7 !important;
+        page-break-after: auto;
+      }
+
+      .box-input, .box-final {
+        border-color: #8C7B9E !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+    }
+
+    /* 반응형 모바일 대응 */
+    @media (max-width: 768px) {
+      .problems-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .page-sheet {
+        padding: 24px 16px;
+      }
+      .title-banner h1 {
+        font-size: 1.6rem;
+      }
+      .title-banner {
+        padding: 14px 20px;
+      }
+      .sheet-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .ans-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .problems-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 배경 솜사탕/동화풍 벡터 장식들 -->
+  <svg class="bg-deco deco-cloud1" viewBox="0 0 100 60" fill="none">
+    <path d="M20 45 Q5 45 5 35 Q5 25 18 24 Q22 10 38 12 Q48 5 62 12 Q75 10 80 22 Q95 24 95 36 Q95 45 80 45 Z" fill="#FFE2E8" />
+  </svg>
+
+  <svg class="bg-deco deco-cloud2" viewBox="0 0 120 70" fill="none">
+    <path d="M25 50 Q8 50 8 38 Q8 26 22 25 Q27 12 45 14 Q56 6 72 14 Q88 12 94 25 Q112 28 112 40 Q112 50 94 50 Z" fill="#DCEBFA" />
+  </svg>
+
+  <svg class="bg-deco deco-stars" viewBox="0 0 50 50" fill="none">
+    <path d="M25 0 L28 17 L45 20 L30 28 L35 45 L22 33 L10 43 L15 27 L0 18 L18 16 Z" fill="#FDF1B8" opacity="0.8"/>
+  </svg>
+
+  <!-- 토끼 장식 SVG -->
+  <svg class="bg-deco deco-bunny" viewBox="0 0 100 120" fill="none">
+    <!-- 귀 -->
+    <ellipse cx="38" cy="30" rx="10" ry="25" fill="#FFE3E8" transform="rotate(-10 38 30)"/>
+    <ellipse cx="38" cy="30" rx="5" ry="16" fill="#FFAEC0" transform="rotate(-10 38 30)"/>
+    <ellipse cx="62" cy="30" rx="10" ry="25" fill="#FFE3E8" transform="rotate(10 62 30)"/>
+    <ellipse cx="62" cy="30" rx="5" ry="16" fill="#FFAEC0" transform="rotate(10 62 30)"/>
+    <!-- 얼굴 -->
+    <circle cx="50" cy="65" r="32" fill="#FFFFFF" stroke="#F1D5DC" stroke-width="2"/>
+    <!-- 눈 & 코 -->
+    <circle cx="40" cy="62" r="3.5" fill="#6C5B7B"/>
+    <circle cx="60" cy="62" r="3.5" fill="#6C5B7B"/>
+    <ellipse cx="50" cy="68" rx="3.5" ry="2.5" fill="#FF8BA0"/>
+    <!-- 볼터치 -->
+    <circle cx="34" cy="70" r="5.5" fill="#FFCCD5" opacity="0.6"/>
+    <circle cx="66" cy="70" r="5.5" fill="#FFCCD5" opacity="0.6"/>
+    <!-- 입 -->
+    <path d="M46 72 Q50 76 54 72" stroke="#7B6B8D" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  </svg>
+
+  <!-- 곰 인형 장식 SVG -->
+  <svg class="bg-deco deco-bear" viewBox="0 0 100 110" fill="none">
+    <!-- 귀 -->
+    <circle cx="28" cy="32" r="14" fill="#E6D3C2"/>
+    <circle cx="28" cy="32" r="7" fill="#FCECE1"/>
+    <circle cx="72" cy="32" r="14" fill="#E6D3C2"/>
+    <circle cx="72" cy="32" r="7" fill="#FCECE1"/>
+    <!-- 얼굴 -->
+    <circle cx="50" cy="60" r="34" fill="#F4E6D9" stroke="#E5CEBC" stroke-width="2"/>
+    <!-- 주둥이 -->
+    <ellipse cx="50" cy="67" rx="15" ry="11" fill="#FFFFFF"/>
+    <ellipse cx="50" cy="63" rx="4.5" ry="3.5" fill="#755E4B"/>
+    <circle cx="38" cy="54" r="3.2" fill="#584534"/>
+    <circle cx="62" cy="54" r="3.2" fill="#584534"/>
+    <circle cx="33" cy="64" r="5" fill="#FFB7B2" opacity="0.5"/>
+    <circle cx="67" cy="64" r="5" fill="#FFB7B2" opacity="0.5"/>
+  </svg>
+
+  <!-- 메인 헤더 & 탐색 컨트롤 -->
+  <header>
+    <div class="title-banner">
+      <h1>
+        <span>☁️</span> 포근포근 세로셈 곱셈 수학책 <span>🌸</span>
+      </h1>
+      <p>두 자릿수 × 한 자릿수를 차근차근 단계별로 풀어보아요 (초등 2학년)</p>
+    </div>
+
+    <div class="controls">
+      <!-- 5개 페이지 + 답지 탭 -->
+      <div class="nav-tabs" id="navTabs">
+        <button class="tab-btn active" onclick="switchPage(1)">🌱 1쪽</button>
+        <button class="tab-btn" onclick="switchPage(2)">🌷 2쪽</button>
+        <button class="tab-btn" onclick="switchPage(3)">🎈 3쪽</button>
+        <button class="tab-btn" onclick="switchPage(4)">⭐ 4쪽</button>
+        <button class="tab-btn" onclick="switchPage(5)">🐰 5쪽</button>
+        <button class="tab-btn ans-tab" onclick="switchPage('ans')">📖 정답지 확인</button>
+      </div>
+
+      <div class="action-buttons">
+        <button class="action-btn" onclick="checkCurrentPageAnswers()">
+          <span>✨</span> 자동 채점하기
+        </button>
+        <button class="action-btn btn-reset" onclick="resetCurrentPage()">
+          <span>🔄</span> 다시 풀기
+        </button>
+        <button class="action-btn btn-print" onclick="window.print()">
+          <span>🖨️</span> 학습지 인쇄하기
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 가이드 안내 문구 -->
+  <div class="worksheet-container">
+    <div class="guide-box">
+      <div class="guide-text">
+        <span class="guide-tag">💡 계산 팁</span>
+        <span><b>일의 자리</b> 곱셈을 먼저 첫째 줄에 쓰고, <b>십의 자리</b> 곱셈을 둘째 줄에 쓴 다음 두 수를 더해요!</span>
+      </div>
+      <div style="font-size: 0.88rem; color: #9A89A8;">
+        (한 페이지당 9문제씩 총 45문제 연습)
+      </div>
+    </div>
+
+    <!-- 문제 페이지 1 ~ 5 및 답지 컨테이너 -->
+    <div id="pagesHost"></div>
+
+    <!-- 정답지 (Answer Key Sheet) -->
+    <div class="page-sheet answer-key-section" id="answerSheetView">
+      <div class="sheet-header">
+        <div class="sheet-header-left">
+          <span class="badge-page" style="background: linear-gradient(135deg, #B5D8F7, #98C7F5); color: #234B70;">정답지</span>
+          <div class="sheet-title-info">
+            <h2>🌸 1쪽 ~ 5쪽 한눈에 보는 풀이 & 정답</h2>
+            <p>스스로 채점하며 단계별 곱셈 원리를 확인해 보세요!</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="answersHost">
+        <!-- 5개 페이지 정답이 자바스크립트로 자동 생성됩니다 -->
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-msg" id="toast">메시지 내용</div>
+
+  <script>
+    // 5페이지 분량의 45문제 데이터 (한 페이지당 9문제)
+    // 초등학교 2학년 곱셈구구와 덧셈을 결합한 두 자릿수 X 한 자릿수 세로셈 구성
+    // 각 문제는 multiplicand(두자릿수), multiplier(한자릿수), 아이콘, 테마
+    const worksheetData = [
+      // 1페이지: 기본 및 쉬운 올림 연습 (10~20대 위주)
+      {
+        page: 1,
+        title: "두 자릿수 X 한 자릿수 쏙쏙 익히기 (기본)",
+        themeEmoji: "🌱",
+        problems: [
+          { qNum: 1, a: 19, b: 3, icon: "🐰" }, // 19 x 3: 9*3=27, 10*3=30 -> 57
+          { qNum: 2, a: 14, b: 2, icon: "⭐" }, // 14 x 2: 4*2=08, 10*2=20 -> 28
+          { qNum: 3, a: 23, b: 3, icon: "☁️" }, // 23 x 3: 3*3=09, 20*3=60 -> 69
+          { qNum: 4, a: 16, b: 4, icon: "🎈" }, // 16 x 4: 6*4=24, 10*4=40 -> 64
+          { qNum: 5, a: 25, b: 3, icon: "🧸" }, // 25 x 3: 5*3=15, 20*3=60 -> 75
+          { qNum: 6, a: 18, b: 5, icon: "🌙" }, // 18 x 5: 8*5=40, 10*5=50 -> 90
+          { qNum: 7, a: 32, b: 3, icon: "🌸" }, // 32 x 3: 2*3=06, 30*3=90 -> 96
+          { qNum: 8, a: 13, b: 6, icon: "🍬" }, // 13 x 6: 3*6=18, 10*6=60 -> 78
+          { qNum: 9, a: 24, b: 4, icon: "🐥" }, // 24 x 4: 4*4=16, 20*4=80 -> 96
+        ]
+      },
+      // 2페이지: 일의 자리 곱셈에서 십의 자리로 올림이 발생하는 다양한 수
+      {
+        page: 2,
+        title: "십의 자리 올림 팡팡 연습하기",
+        themeEmoji: "🌷",
+        problems: [
+          { qNum: 1, a: 28, b: 3, icon: "🍓" }, // 8*3=24, 20*3=60 -> 84
+          { qNum: 2, a: 35, b: 2, icon: "🧁" }, // 5*2=10, 30*2=60 -> 70
+          { qNum: 3, a: 17, b: 5, icon: "🐰" }, // 7*5=35, 10*5=50 -> 85
+          { qNum: 4, a: 42, b: 4, icon: "🌟" }, // 2*4=08, 40*4=160 -> 168
+          { qNum: 5, a: 26, b: 3, icon: "☁️" }, // 6*3=18, 20*3=60 -> 78
+          { qNum: 6, a: 38, b: 2, icon: "🧸" }, // 8*2=16, 30*2=60 -> 76
+          { qNum: 7, a: 15, b: 6, icon: "🎈" }, // 5*6=30, 10*6=60 -> 90
+          { qNum: 8, a: 43, b: 2, icon: "🌸" }, // 3*2=06, 40*2=80 -> 86
+          { qNum: 9, a: 27, b: 3, icon: "🍒" }, // 7*3=21, 20*3=60 -> 81
+        ]
+      },
+      // 3페이지: 30~50대 수와 한 자릿수 곱셈 (세 자릿수 결과 등장)
+      {
+        page: 3,
+        title: "백의 자리까지 쑥쑥 넓혀가기",
+        themeEmoji: "🎈",
+        problems: [
+          { qNum: 1, a: 34, b: 4, icon: "🌈" }, // 4*4=16, 30*4=120 -> 136
+          { qNum: 2, a: 46, b: 3, icon: "🎀" }, // 6*3=18, 40*3=120 -> 138
+          { qNum: 3, a: 52, b: 3, icon: "🍭" }, // 2*3=06, 50*3=150 -> 156
+          { qNum: 4, a: 29, b: 4, icon: "🌙" }, // 9*4=36, 20*4=80 -> 116
+          { qNum: 5, a: 36, b: 4, icon: "🐰" }, // 6*4=24, 30*4=120 -> 144
+          { qNum: 6, a: 45, b: 3, icon: "🍼" }, // 5*3=15, 40*3=120 -> 135
+          { qNum: 7, a: 54, b: 2, icon: "🧸" }, // 4*2=08, 50*2=100 -> 108
+          { qNum: 8, a: 37, b: 3, icon: "⭐" }, // 7*3=21, 30*3=90 -> 111
+          { qNum: 9, a: 48, b: 2, icon: "🌸" }, // 8*2=16, 40*2=80 -> 96
+        ]
+      },
+      // 4페이지: 50~70대 수와 곱셈 연습
+      {
+        page: 4,
+        title: "자신감 뿜뿜! 세로셈 마스터하기",
+        themeEmoji: "⭐",
+        problems: [
+          { qNum: 1, a: 56, b: 3, icon: "🌻" }, // 6*3=18, 50*3=150 -> 168
+          { qNum: 2, a: 63, b: 3, icon: "☁️" }, // 3*3=09, 60*3=180 -> 189
+          { qNum: 3, a: 47, b: 4, icon: "🎈" }, // 7*4=28, 40*4=160 -> 188
+          { qNum: 4, a: 72, b: 4, icon: "🍰" }, // 2*4=08, 70*4=280 -> 288
+          { qNum: 5, a: 58, b: 2, icon: "🐰" }, // 8*2=16, 50*2=100 -> 116
+          { qNum: 6, a: 65, b: 3, icon: "🧸" }, // 5*3=15, 60*3=180 -> 195
+          { qNum: 7, a: 39, b: 5, icon: "✨" }, // 9*5=45, 30*5=150 -> 195
+          { qNum: 8, a: 74, b: 2, icon: "🌙" }, // 4*2=08, 70*2=140 -> 148
+          { qNum: 9, a: 53, b: 4, icon: "🌸" }, // 3*4=12, 50*4=200 -> 212
+        ]
+      },
+      // 5페이지: 종합 완성 및 실력 쑥쑥 도전 문제
+      {
+        page: 5,
+        title: "완벽 곱셈 왕 도전! 총정리",
+        themeEmoji: "🐰",
+        problems: [
+          { qNum: 1, a: 68, b: 4, icon: "👑" }, // 8*4=32, 60*4=240 -> 272
+          { qNum: 2, a: 76, b: 3, icon: "🦄" }, // 6*3=18, 70*3=210 -> 228
+          { qNum: 3, a: 82, b: 4, icon: "🍭" }, // 2*4=08, 80*4=320 -> 328
+          { qNum: 4, a: 57, b: 5, icon: "🎀" }, // 7*5=35, 50*5=250 -> 285
+          { qNum: 5, a: 85, b: 3, icon: "🧸" }, // 5*3=15, 80*3=240 -> 255
+          { qNum: 6, a: 69, b: 4, icon: "🎈" }, // 9*4=36, 60*4=240 -> 276
+          { qNum: 7, a: 78, b: 3, icon: "⭐" }, // 8*3=24, 70*3=210 -> 234
+          { qNum: 8, a: 92, b: 4, icon: "🐰" }, // 2*4=08, 90*4=360 -> 368
+          { qNum: 9, a: 84, b: 5, icon: "🌸" }, // 4*5=20, 80*5=400 -> 420
+        ]
+      }
+    ];
+
+    let currentPage = 1;
+
+    // 문제 HTML 빌더
+    function createProblemHTML(prob, pageNum) {
+      const { qNum, a, b, icon } = prob;
+      const ones = a % 10;
+      const tens = Math.floor(a / 10);
+      
+      const step1Val = ones * b; // 일의 자리 곱 (예: 9*3 = 27)
+      const step2Val = tens * 10 * b; // 십의 자리 곱 (예: 10*3 = 30)
+      const totalVal = a * b; // 최종 결과 (57)
+
+      // 박스 자리수 계산
+      const step1Str = String(step1Val);
+      const step2Str = String(step2Val);
+      const totalStr = String(totalVal);
+
+      // 세 자리 규격 맞춤 (오른쪽 정렬을 위해 필요한 칸 수 생성)
+      // 초등 2학년용 템플릿: 
+      //  19
+      // X 3
+      // ---
+      // □□ (일의 자리 곱)
+      // □□ (십의 자리 곱)
+      // ---
+      // □□□ (최종 합계)
+      return `
+        <div class="problem-card" id="card-${pageNum}-${qNum}" data-page="${pageNum}" data-q="${qNum}" data-ans-step1="${step1Val}" data-ans-step2="${step2Val}" data-ans-total="${totalVal}">
+          <div class="problem-num">
+            <span>[${qNum}]</span>
+          </div>
+          <div class="problem-icon-tag">${icon}</div>
+
+          <div class="vertical-math">
+            <!-- 윗수 (두 자릿수) -->
+            <div class="num-row multiplicand">
+              <span>${tens}</span><span>${ones}</span>
+            </div>
+            <!-- 아래수 (한 자릿수) -->
+            <div class="num-row multiplier-row">
+              <span class="operator-symbol">×</span>
+              <span>${b}</span>
+            </div>
+            
+            <div class="divider-line"></div>
+
+            <!-- 1단계: (일의 자리 수) X (곱하는 수) -->
+            <div class="partial-step">
+              <span class="step-label">${ones}×${b}</span>
+              <input type="text" class="box-input step1-tens" maxlength="1" inputmode="numeric" oninput="handleBoxInput(this)">
+              <input type="text" class="box-input step1-ones" maxlength="1" inputmode="numeric" oninput="handleBoxInput(this)">
+            </div>
+
+            <!-- 2단계: (십의 자리 수) X (곱하는 수) -->
+            <div class="partial-step">
+              <span class="step-label">${tens}0×${b}</span>
+              ${step2Str.length >= 3 ? `<input type="text" class="box-input step2-hundreds" maxlength="1" inputmode="numeric" oninput="handleBoxInput(this)">` : `<div class="box-placeholder-empty"></div>`}
+              <input type="text" class="box-input step2-tens" maxlength="1" inputmode="numeric" oninput="handleBoxInput(this)">
+              <input type="text" class="box-input step2-ones" maxlength="1" inputmode="numeric" oninput="handleBoxInput(this)">
+            </div>
+
+            <div class="final-line"></div>
+
+            <!-- 3단계: 두 값의 최종 합계 (세 자릿수 또는 두 자릿수) -->
+            <div class="final-sum-row">
+              ${totalStr.length >= 3 ? `<input type="text" class="box-final sum-hundreds" maxlength="1" inputmode="numeric" oninput="handleBoxInput(this)">` : `<div class="box-placeholder-empty"></div>`}
+              <input type="text" class="box-final sum-tens" maxlength="1" inputmode="numeric" oninput="handleBoxInput(this)">
+              <input type="text" class="box-final sum-ones" maxlength="1" inputmode="numeric" oninput="handleBoxInput(this)">
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 워크시트 DOM 렌더링
+    function initWorksheet() {
+      const host = document.getElementById('pagesHost');
+      const answersHost = document.getElementById('answersHost');
+
+      worksheetData.forEach(pageData => {
+        // 1. 문제 페이지 생성
+        const pageSheet = document.createElement('div');
+        pageSheet.className = `page-sheet ${pageData.page === 1 ? 'active' : ''}`;
+        pageSheet.id = `pageSheet-${pageData.page}`;
+
+        let gridCards = '';
+        pageData.problems.forEach(prob => {
+          gridCards += createProblemHTML(prob, pageData.page);
+        });
+
+        pageSheet.innerHTML = `
+          <div class="sheet-header">
+            <div class="sheet-header-left">
+              <span class="badge-page">${pageData.themeEmoji} 제 ${pageData.page} 쪽</span>
+              <div class="sheet-title-info">
+                <h2>${pageData.title}</h2>
+                <p>세로셈 순서에 맞추어 네모 빈칸(□)을 또박또박 채워보세요.</p>
+              </div>
+            </div>
+            <div class="sheet-header-right">
+              <div class="input-pill">
+                <span>날짜:</span>
+                <input type="text" placeholder="  월  일" />
+              </div>
+              <div class="input-pill">
+                <span>이름:</span>
+                <input type="text" placeholder="어린이" />
+              </div>
+            </div>
+          </div>
+
+          <div class="problems-grid">
+            ${gridCards}
+          </div>
+
+          <div class="sheet-footer">
+            <div class="score-sticker-zone">
+              <div class="sticker-circle">
+                <span>참잘했어요</span>
+                <div>참 잘했어요!</div>
+              </div>
+              <div class="encouragement-msg">
+                오늘도 한 걸음 더 똑똑해진 우리 어린이, 최고예요! 👏
+              </div>
+            </div>
+            <div class="page-indicator-bottom">
+              ${pageData.page} / 5 PAGE
+            </div>
+          </div>
+        `;
+        host.appendChild(pageSheet);
+
+        // 2. 답지 블록 생성
+        const ansBlock = document.createElement('div');
+        ansBlock.className = 'ans-page-block';
+        let ansItemsHTML = '';
+        pageData.problems.forEach(p => {
+          const ones = p.a % 10;
+          const tens = Math.floor(p.a / 10);
+          const s1 = ones * p.b;
+          const s2 = tens * 10 * p.b;
+          const tot = p.a * p.b;
+
+          ansItemsHTML += `
+            <div class="ans-item">
+              <div class="ans-item-q">
+                ${p.icon} <b>${p.qNum}번</b> : ${p.a} × ${p.b}
+              </div>
+              <div class="ans-item-steps">
+                <div>${s1} (${ones}×${p.b})</div>
+                <div>+ ${s2} (${tens}0×${p.b})</div>
+                <div class="ans-item-final">= ${tot}</div>
+              </div>
+            </div>
+          `;
+        });
+
+        ansBlock.innerHTML = `
+          <div class="ans-page-title">
+            <span>${pageData.themeEmoji} 제 ${pageData.page}쪽 정답 및 세로셈 풀이</span>
+            <span style="font-size:0.95rem; color:#8AA9C9;">총 9문제</span>
+          </div>
+          <div class="ans-grid">
+            ${ansItemsHTML}
+          </div>
+        `;
+        answersHost.appendChild(ansBlock);
+      });
+    }
+
+    // 탭 전환
+    function switchPage(pageKey) {
+      currentPage = pageKey;
+      
+      // 버튼 액티브 토글
+      const buttons = document.querySelectorAll('.nav-tabs .tab-btn');
+      buttons.forEach((btn, idx) => {
+        btn.classList.remove('active');
+        if (pageKey === 'ans' && idx === 5) {
+          btn.classList.add('active');
+        } else if (idx === pageKey - 1) {
+          btn.classList.add('active');
+        }
+      });
+
+      // 시트 화면 토글
+      document.querySelectorAll('.page-sheet').forEach(sheet => {
+        sheet.classList.remove('active');
+      });
+
+      if (pageKey === 'ans') {
+        document.getElementById('answerSheetView').classList.add('active');
+      } else {
+        const target = document.getElementById(`pageSheet-${pageKey}`);
+        if (target) target.classList.add('active');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 숫자 입력 시 다음 박스로 자동 포커스 이동 편의기능
+    function handleBoxInput(el) {
+      el.value = el.value.replace(/[^0-9]/g, '');
+      el.classList.remove('correct', 'wrong');
+
+      if (el.value.length === 1) {
+        // 다음 빈 박스로 이동
+        const container = el.closest('.vertical-math');
+        const inputs = Array.from(container.querySelectorAll('input.box-input, input.box-final'));
+        const currentIndex = inputs.indexOf(el);
+        if (currentIndex < inputs.length - 1) {
+          inputs[currentIndex + 1].focus();
+        }
+      }
+    }
+
+    // 현재 페이지 채점 기능
+    function checkCurrentPageAnswers() {
+      if (currentPage === 'ans') {
+        showToast("정답지 화면에서는 채점할 수 없습니다. 문제 페이지로 이동해주세요!");
+        return;
+      }
+
+      const currentSheet = document.getElementById(`pageSheet-${currentPage}`);
+      const cards = currentSheet.querySelectorAll('.problem-card');
+      let totalCorrect = 0;
+
+      cards.forEach(card => {
+        const expStep1 = parseInt(card.getAttribute('data-ans-step1'), 10);
+        const expStep2 = parseInt(card.getAttribute('data-ans-step2'), 10);
+        const expTotal = parseInt(card.getAttribute('data-ans-total'), 10);
+
+        // 사용자가 입력한 step1 값 조합
+        const s1_tens = card.querySelector('.step1-tens');
+        const s1_ones = card.querySelector('.step1-ones');
+        const userStep1 = parseInt((s1_tens?.value || '') + (s1_ones?.value || ''), 10);
+
+        // 사용자가 입력한 step2 값 조합
+        const s2_h = card.querySelector('.step2-hundreds');
+        const s2_t = card.querySelector('.step2-tens');
+        const s2_o = card.querySelector('.step2-ones');
+        const userStep2Str = (s2_h ? s2_h.value : '') + (s2_t?.value || '') + (s2_o?.value || '');
+        const userStep2 = parseInt(userStep2Str, 10);
+
+        // 사용자가 입력한 최종 합계 조합
+        const sum_h = card.querySelector('.sum-hundreds');
+        const sum_t = card.querySelector('.sum-tens');
+        const sum_o = card.querySelector('.sum-ones');
+        const userTotalStr = (sum_h ? sum_h.value : '') + (sum_t?.value || '') + (sum_o?.value || '');
+        const userTotal = parseInt(userTotalStr, 10);
+
+        // Step 1 판정
+        const isStep1Ok = (userStep1 === expStep1);
+        [s1_tens, s1_ones].forEach(input => {
+          if (input) {
+            input.classList.toggle('correct', isStep1Ok);
+            input.classList.toggle('wrong', !isStep1Ok && (s1_tens.value || s1_ones.value));
+          }
+        });
+
+        // Step 2 판정
+        const isStep2Ok = (userStep2 === expStep2);
+        [s2_h, s2_t, s2_o].forEach(input => {
+          if (input) {
+            input.classList.toggle('correct', isStep2Ok);
+            input.classList.toggle('wrong', !isStep2Ok && userStep2Str.length > 0);
+          }
+        });
+
+        // Final Sum 판정
+        const isFinalOk = (userTotal === expTotal);
+        [sum_h, sum_t, sum_o].forEach(input => {
+          if (input) {
+            input.classList.toggle('correct', isFinalOk);
+            input.classList.toggle('wrong', !isFinalOk && userTotalStr.length > 0);
+          }
+        });
+
+        if (isStep1Ok && isStep2Ok && isFinalOk) {
+          totalCorrect++;
+        }
+      });
+
+      if (totalCorrect === 9) {
+        showToast(`🎉 대단해요! ${currentPage}쪽 9문제를 모두 완벽하게 맞혔어요! 💯`);
+      } else {
+        showToast(`✏️ 9문제 중 ${totalCorrect}문제를 정확히 맞혔어요! 틀린 부분을 다시 확인해보세요.`);
+      }
+    }
+
+    // 현재 페이지 초기화
+    function resetCurrentPage() {
+      if (currentPage === 'ans') return;
+      const currentSheet = document.getElementById(`pageSheet-${currentPage}`);
+      const inputs = currentSheet.querySelectorAll('input');
+      inputs.forEach(inp => {
+        inp.value = '';
+        inp.classList.remove('correct', 'wrong');
+      });
+      showToast(`${currentPage}쪽의 답안을 모두 지웠습니다. 다시 풀어보세요! 🌸`);
+    }
+
+    // 토스트 팝업 표시
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      toast.innerText = text;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // 초기화 실행
+    window.addEventListener('DOMContentLoaded', () => {
+      initWorksheet();
+    });
+  </script>
+</body>
+</html>
